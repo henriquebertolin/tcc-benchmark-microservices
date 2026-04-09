@@ -1,0 +1,30 @@
+{
+  "name": "notifications-service",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev container/src/server.ts",
+    "build": "tsc",
+    "start": "node dist/container/src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+    "dependencies": {
+    "@fastify/aws-lambda": "^6.4.0",
+    "axios": "^1.14.0",
+    "dotenv": "^17.3.1",
+    "fastify": "^5.8.4",
+    "pg": "^8.20.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.161",
+    "@types/node": "^25.5.0",
+    "@types/pg": "^8.20.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.2"
+  }
+}

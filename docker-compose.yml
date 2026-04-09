@@ -1,0 +1,62 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: benchmark
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  user-service:
+    build: ./node/user-service
+    container_name: user-service
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/benchmark
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+
+  order-service:
+    build: ./node/orders-service
+    container_name: order-service
+    environment:
+      PORT: 3001
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/benchmark
+      USER_SERVICE_URL: http://user-service:3000
+      NOTIFICATION_SERVICE_URL: http://notification-service:3002
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+      - user-service
+      - notification-service
+
+  notification-service:
+    build: ./node/notifications-service
+    container_name: notification-service
+    environment:
+      PORT: 3002
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/benchmark
+      DELIVERY_SERVICE_URL: http://delivery-service:3003
+    ports:
+      - "3002:3002"
+    depends_on:
+      - postgres
+      - delivery-service
+
+  delivery-service:
+    build: ./node/delivery-service
+    container_name: delivery-service
+    environment:
+      PORT: 3003
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/benchmark
+    ports:
+      - "3003:3003"
+    depends_on:
+      - postgres

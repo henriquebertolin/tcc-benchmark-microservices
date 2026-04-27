@@ -11,7 +11,8 @@ export class OrdersUseCase {
       process.env.NOTIFICATION_SERVICE_URL || "http://localhost:3002";
 
     let user;
-
+    console.log("ORDER DATA:", orderData);
+    console.log("USER_SERVICE_URL:", userServiceUrl);
     try {
       const response = await axios.get(`${userServiceUrl}/users/by-email`, {
         params: { email: orderData.userEmail },

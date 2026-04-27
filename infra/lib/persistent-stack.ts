@@ -15,7 +15,7 @@ export class PersistentStack extends cdk.Stack {
     super(scope, id, props);
 
     this.vpc = new ec2.Vpc(this, 'BenchmarkVpc', {
-      natGateways: 0,
+      natGateways: 1,
       maxAzs: 2,
       subnetConfiguration: [
         {
@@ -26,6 +26,11 @@ export class PersistentStack extends cdk.Stack {
         {
           name: 'private-isolated',
           subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+          cidrMask: 24,
+        },
+        {
+          name: 'private-egress',
+          subnetType: ec2.SubnetType.PRIVATE_WITH_EGRESS,
           cidrMask: 24,
         },
       ],

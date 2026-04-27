@@ -2,6 +2,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { PersistentStack } from '../lib/persistent-stack';
 import { Ec2Stack } from '../lib/ec2-stack';
+import { LambdaStack } from "../lib/lambda-stack";
 
 const app = new cdk.App();
 
@@ -18,4 +19,11 @@ new Ec2Stack(app, 'Ec2Stack', {
   ec2SecurityGroup: persistentStack.ec2SecurityGroup,
   dbEndpoint: persistentStack.dbEndpoint,
   dbSecretArn: persistentStack.dbSecretArn,
+});
+
+new LambdaStack(app, "LambdaStack", {
+  env,
+  vpc: persistentStack.vpc,
+  lambdaSecurityGroup: persistentStack.lambdaSecurityGroup,
+  dbEndpoint: persistentStack.dbEndpoint,
 });
